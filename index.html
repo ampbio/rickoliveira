@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rick Oliveira</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;700;900&family=Barlow:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #1a1a1a;
+    --bg2: #222222;
+    --surface: #2a2a2a;
+    --surface2: #333333;
+    --white: #f0f0f0;
+    --gray: #888;
+    --accent: #e8e8e8;
+    --line: #3a3a3a;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--white);
+    font-family: 'Barlow', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Diagonal BG stripe - Alterado para Prata Metálico */
+  body::before {
+    content: '';
+    position: fixed;
+    top: -20%;
+    right: -10%;
+    width: 45%;
+    height: 130%;
+    background: linear-gradient(135deg, #e0e0e0 0%, #f5f5f5 25%, #b8b8b8 50%, #e0e0e0 75%, #999999 100%);
+    box-shadow: inset 0 0 100px rgba(255,255,255,0.2);
+    opacity: 0.85;
+    clip-path: polygon(15% 0%, 100% 0%, 100% 100%, 0% 100%);
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .container {
+    position: relative;
+    z-index: 1;
+    max-width: 480px;
+    margin: 0 auto;
+    padding: 0 20px 20px;
+  }
+
+  /* HERO */
+  .hero {
+    padding: 32px 0 28px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0;
+  }
+
+  .hero-top-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gray);
+    margin-bottom: 16px;
+    width: 100%;
+    text-align: center;
+  }
+
+  .hero-main {
+    display: flex;
+    align-items: flex-start;
+    gap: 18px;
+    width: 100%;
+    margin-bottom: 0;
+  }
+
+  .avatar-wrap {
+    flex-shrink: 0;
+    width: 160px;
+  }
+
+  .avatar {
+    width: 160px;
+    aspect-ratio: 4 / 5;
+    border-radius: 10px;
+    background: var(--surface2);
+    border: 1.5px solid var(--white);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900;
+    font-size: 28px;
+    color: var(--white);
+    letter-spacing: -1px;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .avatar .slide {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transition: opacity 1.2s ease-in-out;
+  }
+
+  .avatar .slide.active {
+    opacity: 1;
+  }
+
+  .name-block {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-self: stretch;
+    padding-bottom: 4px;
+  }
+
+  .tagline {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 12px;
+    font-weight: 400;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--gray);
+    margin-top: 8px;
+  }
+
+  .label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gray);
+    margin-bottom: 4px;
+  }
+
+  h1 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: clamp(52px, 14vw, 72px);
+    font-weight: 900;
+    line-height: 0.9;
+    text-transform: uppercase;
+    color: var(--white);
+    letter-spacing: -1px;
+  }
+
+  /* SOCIAL STRIP */
+  .socials {
+    display: flex;
+    gap: 12px;
+    margin: 0 0 8px;
+    justify-content: center;
+    width: 100%;
+  }
+
+  .social-icon {
+    width: 40px;
+    height: 40px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: border-color .2s, transform .15s;
+    text-decoration: none;
+  }
+
+  .social-icon:hover {
+    border-color: var(--white);
+    transform: translateY(-2px);
+  }
+
+  .social-icon svg {
+    width: 18px;
+    height: 18px;
+    fill: var(--white);
+  }
+
+  /* SECTION LABEL */
+  .section-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--gray);
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--line);
+  }
+
+  /* LINKS */
+  .links {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 32px;
+  }
+
+  .link-card {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 16px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    text-decoration: none;
+    color: var(--white);
+    cursor: pointer;
+    transition: background .2s, border-color .2s, transform .15s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .link-card::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background: transparent;
+    transition: background .2s;
+  }
+
+  .link-card:hover {
+    background: var(--surface2);
+    border-color: #555;
+    transform: translateX(4px);
+  }
+
+  .link-card:hover::before {
+    background: var(--white);
+  }
+
+  .link-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-size: 18px;
+    overflow: hidden; /* Garante que a imagem não vaze o círculo/borda do ícone */
+  }
+
+  /* Classe para os novos ícones de imagem personalizados */
+  .link-img-icon {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Ajusta e preenche a área do ícone proporcionalmente */
+    display: block;
+  }
+
+  .link-text {
+    flex: 1;
+  }
+
+  .link-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    line-height: 1.1;
+  }
+
+  .link-sub {
+    font-size: 11px;
+    color: var(--gray);
+    margin-top: 2px;
+    letter-spacing: 0.3px;
+  }
+
+  .link-arrow {
+    color: var(--gray);
+    flex-shrink: 0;
+    font-size: 16px;
+    transition: color .2s;
+  }
+
+  .link-card:hover .link-arrow {
+    color: var(--white);
+  }
+
+  /* FOOTER */
+  footer {
+    text-align: center;
+    padding: 16px 0 8px;
+    border-top: 1px solid var(--line);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+  }
+
+  .logo-text {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--gray);
+  }
+
+  /* Entrance animation */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .hero { animation: fadeUp .5s ease both; }
+  .links .link-card:nth-child(1) { animation: fadeUp .5s .1s ease both; }
+  .links .link-card:nth-child(2) { animation: fadeUp .5s .15s ease both; }
+  .links .link-card:nth-child(3) { animation: fadeUp .5s .2s ease both; }
+  .links .link-card:nth-child(4) { animation: fadeUp .5s .25s ease both; }
+  .links .link-card:nth-child(5) { animation: fadeUp .5s .3s ease both; }
+  .links .link-card:nth-child(6) { animation: fadeUp .5s .35s ease both; }
+  .links .link-card:nth-child(7) { animation: fadeUp .5s .4s ease both; }
+  .links .link-card:nth-child(8) { animation: fadeUp .5s .45s ease both; }
+
+  /* MARQUEE EMISSORAS */
+  .marquee-section {
+    margin: 0 -20px 32px;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .marquee-section::before,
+  .marquee-section::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 48px;
+    z-index: 2;
+    pointer-events: none;
+  }
+
+  .marquee-section::before {
+    left: 0;
+    background: linear-gradient(to right, var(--bg), transparent);
+  }
+
+  .marquee-section::after {
+    right: 0;
+    background: linear-gradient(to left, var(--bg), transparent);
+  }
+
+  .marquee-track {
+    display: flex;
+    gap: 12px;
+    width: max-content;
+    animation: marquee 28s linear infinite;
+  }
+
+  .marquee-track:hover {
+    animation-play-state: paused;
+  }
+
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
+  }
+
+  .marquee-item {
+    flex-shrink: 0;
+    width: 128px;
+    height: 72px;
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid var(--line);
+    background: var(--surface);
+  }
+
+  .marquee-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <div class="hero">
+    <div class="hero-top-label">Criador de Conteúdo · Filmmaker</div>
+    <div class="hero-main">
+      <div class="avatar-wrap">
+        <div class="avatar" id="avatarSlide">
+          <img class="slide active" src="imagens/rick1.png" alt="Rick Oliveira">
+          <img class="slide" src="imagens/rick2.png" alt="Rick Oliveira">
+          <img class="slide" src="imagens/rick3.png" alt="Rick Oliveira">
+          <img class="slide" src="imagens/rick4.png" alt="Rick Oliveira">
+          <img class="slide" src="imagens/rick5.png" alt="Rick Oliveira">
+          <img class="slide" src="imagens/rick6.png" alt="Rick Oliveira">
+          <img class="slide" src="imagens/rick7.png" alt="Rick Oliveira">
+          <img class="slide" src="imagens/rick8.png" alt="Rick Oliveira">
+        </div>
+      </div>
+      <div class="name-block">
+        <h1>Rick<br>Oliveira</h1>
+        <div class="tagline">Vivendo, Aprendendo e Mostrando</div>
+      </div>
+    </div>
+
+    <div style="width:100%; height:1px; background:var(--line); margin: 20px 0 20px;"></div>
+
+    <div class="socials">
+      <a href="https://www.instagram.com/rickliveira" class="social-icon" target="_blank" title="Instagram">
+        <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+      </a>
+      <a href="https://www.tiktok.com/@rickliveira" class="social-icon" target="_blank" title="TikTok">
+        <svg viewBox="0 0 24 24"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg>
+      </a>
+      <a href="https://www.youtube.com/channel/UCnm9sz1DAvCou6otQdaIMKg" class="social-icon" target="_blank" title="YouTube">
+        <svg viewBox="0 0 24 24"><path d="M23.495 6.205a3.007 3.007 0 00-2.088-2.088c-1.87-.501-9.396-.501-9.396-.501s-7.507-.01-9.396.501A3.007 3.007 0 00.527 6.205a31.247 31.247 0 00-.522 5.805 31.247 31.247 0 00.522 5.783 3.007 3.007 0 002.088 2.088c1.868.502 9.396.502 9.396.502s7.506 0 9.396-.502a3.007 3.007 0 002.088-2.088 31.247 31.247 0 00.5-5.783 31.247 31.247 0 00-.5-5.805zM9.609 15.601V8.408l6.264 3.602z"/></svg>
+      </a>
+      <a href="https://www.facebook.com/people/Rick-Portugal/100002446078937/?mibextid=wwXIfr&rdid=fbHz78bbjEesYIXP&share_url=https%3A%2F%2Fwww.facebook.com%2Fshare%2F1YuWo6wDM2%2F%3Fmibextid%3DwwXIfr" class="social-icon" target="_blank" title="Facebook">
+        <svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+      </a>
+      <a href="https://api.whatsapp.com/send?phone=351964515195" class="social-icon" target="_blank" title="WhatsApp">
+        <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      </a>
+      <a href="mailto:rickliveira.publicidade@gmail.com" class="social-icon" title="Email">
+        <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+      </a>
+    </div>
+  </div>
+
+  <div class="section-label">Emissoras que já estive</div>
+  <div class="marquee-section">
+    <div class="marquee-track" id="marqueeTrack">
+      </div>
+  </div>
+
+  <div class="section-label">Parcerias & Collabs</div>
+  <div class="links" style="margin-bottom:24px;">
+    <a href="https://api.whatsapp.com/send?phone=351964515195&text=Ol%C3%A1%2C%20tudo%20bem%3F%20Quero%20fechar%20uma%20publicidade%20com%20voc%C3%AA%2C%20poderia%20me%20dar%20mais%20informa%C3%A7%C3%B5es%20sobre%3F" class="link-card" target="_blank">
+      <div class="link-icon" style="background:#25D366;">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      </div>
+      <div class="link-text">
+        <div class="link-title">Parcerias, Publicidade & Collabs</div>
+        <div class="link-sub">Fale comigo no WhatsApp</div>
+      </div>
+      <span class="link-arrow">→</span>
+    </a>
+
+    <a href="imagens/mediakit.pdf" class="link-card" target="_blank">
+      <div class="link-icon" style="background:#c0392b;">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M20 2H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-8.5 7.5c0 .83-.67 1.5-1.5 1.5H9v2H7.5V7H10c.83 0 1.5.67 1.5 1.5v1zm5 2c0 .83-.67 1.5-1.5 1.5h-2.5V7H15c.83 0 1.5.67 1.5 1.5v3zm4-3H19v1h1.5V11H19v2h-1.5V7h3v1.5zM9 9.5h1v-1H9v1zM4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm10 5.5h1v-3h-1v3z"/></svg>
+      </div>
+      <div class="link-text">
+        <div class="link-title">Veja agora meu Media Kit</div>
+        <div class="link-sub">Estatísticas, alcance e parcerias</div>
+      </div>
+      <span class="link-arrow">→</span>
+    </a>
+  </div>
+  
+  <div class="section-label">Códigos de Desconto</div>
+  <div class="links">
+
+    <a href="https://try.sendwave.com/kjap/blnndonc" class="link-card" target="_blank">
+      <div class="link-icon" style="background:#FF5733;">
+        <img src="imagens/sendwave.png" alt="Sendwave" class="link-img-icon">
+      </div>
+      <div class="link-text">
+        <div class="link-title">Sendwave — 10€ de Bónus</div>
+        <div class="link-sub">Código: RICKLIVEIRA</div>
+      </div>
+      <span class="link-arrow">→</span>
+    </a>
+
+    <a href="https://clk.tradedoubler.com/click?p=353429&a=3463014&url=https%3A%2F%2Fcecotec.pt%2Fpt" class="link-card" target="_blank">
+      <div class="link-icon" style="background:#1c1c1c; border:1px solid #444;">
+        <img src="imagens/cecotec.png" alt="Cecotec" class="link-img-icon">
+      </div>
+      <div class="link-text">
+        <div class="link-title">Cecotec — Desconto</div>
+        <div class="link-sub">Código: RICK5LIVEIRA</div>
+      </div>
+      <span class="link-arrow">→</span>
+    </a>
+
+    <a href="https://api.whatsapp.com/send/?phone=5591985106086&text=Hello%2C+eu+conheci+a+English+For+Me+nos+stories+de+Rick+Oliveira+e+gostaria+de+saber+mais.&type=phone_number&app_absent=0" class="link-card" target="_blank">
+      <div class="link-icon" style="background:#2563EB;">
+        <img src="imagens/englishforme.png" alt="English For Me" class="link-img-icon">
+      </div>
+      <div class="link-text">
+        <div class="link-title">English For Me — Aulas de Inglês</div>
+        <div class="link-sub">Aprende inglês com desconto</div>
+      </div>
+      <span class="link-arrow">→</span>
+    </a>
+
+    <a href="https://api.whatsapp.com/send/?phone=351961885299&text=Ol%C3%A1%2C+tudo+bem%3F+%EF%BF%BD+Vim+por+indica%C3%A7%C3%A3o+do+Rick+e+tenho+interesse+em+conhecer+melhor+como+funcionam+os+planos+semanais+e+mensais+das+marmitas%21&type=phone_number&app_absent=0" class="link-card" target="_blank">
+      <div class="link-icon" style="background:#c0392b;">
+        <img src="imagens/tastemarmitaria.jpg" alt="Taste Marmitaria" class="link-img-icon">
+      </div>
+      <div class="link-text">
+        <div class="link-title">Taste Marmitaria — 10% OFF</div>
+        <div class="link-sub">Marmitas saudáveis em Portugal</div>
+      </div>
+      <span class="link-arrow">→</span>
+    </a>
+
+    <a href="https://nickel.eu/pt-pt?utm_source=instagram&utm_medium=post&utm_campaign=pt_soc_brand_traf_influence_all_rick&utm_content=26_rick_oliveira&utm_term=" class="link-card" target="_blank">
+      <div class="link-icon" style="background:#ff6b00;">
+        <img src="imagens/nickel.png" alt="Nickel" class="link-img-icon">
+      </div>
+      <div class="link-text">
+        <div class="link-title">Nickel — Conta Sem Complicações</div>
+        <div class="link-sub">Conta de pagamento simples</div>
+      </div>
+      <span class="link-arrow">→</span>
+    </a>
+
+    <a href="https://pt.dormideo.com/?ref=RICARDODORNELESDEOLIVEIRA" class="link-card" target="_blank">
+      <div class="link-icon" style="background:#0062cc;">
+        <img src="imagens/dormideo.jpg" alt="Dormideo Portugal" class="link-img-icon">
+      </div>
+      <div class="link-text">
+        <div class="link-title">Dormideo Portugal — 10% OFF</div>
+        <div class="link-sub">Produtos para dormir melhor</div>
+      </div>
+      <span class="link-arrow">→</span>
+    </a>
+
+  </div>
+
+  <footer>
+    <img src="imagens/logorick.png" alt="Rick Oliveira" style="height:24px; width:auto; opacity:0.6;">
+    <div class="logo-text">© 2026 Rick Oliveira</div>
+  </footer>
+
+</div>
+
+<script>
+  (function() {
+    const track = document.getElementById('marqueeTrack');
+    const total = 14;
+    for (let pass = 0; pass < 2; pass++) {
+      for (let i = 1; i <= total; i++) {
+        const div = document.createElement('div');
+        div.className = 'marquee-item';
+        const img = document.createElement('img');
+        img.src = `imagens/emissora${i}.png`;
+        img.alt = `Emissora ${i}`;
+        img.loading = 'lazy';
+        div.appendChild(img);
+        track.appendChild(div);
+      }
+    }
+  })();
+
+  // Slideshow crossfade
+  (function() {
+    const slides = document.querySelectorAll('#avatarSlide .slide');
+    let current = 0;
+    setInterval(() => {
+      slides[current].classList.remove('active');
+      current = (current + 1) % slides.length;
+      slides[current].classList.add('active');
+    }, 5000);
+  })();
+</script>
+</body>
+</html>
