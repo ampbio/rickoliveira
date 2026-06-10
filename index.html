@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Rick Oliveira - Links de direcionamento</title>
+<title>Rick Oliveira</title>
 <meta name="description" content="Rick Oliveira — Criador de Conteúdo e Filmmaker. Parcerias, publicidade, media kit e muito mais.">
 <meta name="theme-color" content="#1a1a1a">
 <meta property="og:title" content="Rick Oliveira">
@@ -414,7 +414,7 @@
 <div class="container">
 
   <div class="hero">
-    <div class="hero-top-label">Criador de Conteúdo · Motorista TVDE</div>
+    <div class="hero-top-label">Criador de Conteúdo · Filmmaker</div>
     <div class="hero-main">
       <div class="avatar-wrap">
         <div class="avatar" id="avatarSlide">
@@ -847,6 +847,7 @@
   function pdfFrameLoaded() {
     const frame = document.getElementById('pdfFrame');
     const loading = document.getElementById('pdfLoading');
+    if (pdfTimeout) { clearTimeout(pdfTimeout); pdfTimeout = null; }
     frame.style.opacity = '1';
     loading.style.display = 'none';
   }
@@ -858,6 +859,7 @@
   }
 
   let pdfInjected = false;
+  let pdfTimeout = null;
 
   function openMediaKit() {
     const overlay = document.getElementById('mediaKitOverlay');
@@ -869,15 +871,23 @@
         panel.style.transform = 'translateY(0)';
         if (!pdfInjected) {
           pdfInjected = true;
-          // Monta URL absoluta do PDF para o Google Docs Viewer
           const pdfPath = 'imagens/mediakit.pdf';
-          const base = window.location.origin + window.location.pathname.replace(/\/[^/]*$/, '/');
-          const absUrl = encodeURIComponent(base + pdfPath);
           const frame = document.getElementById('pdfFrame');
-          // Tenta direto no mobile/desktop; Google Docs como fallback universal
           const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
           if (isMobile) {
+            // Garante URL absoluta correcta para o Google Docs Viewer
+            const origin = window.location.origin;
+            const pathname = window.location.pathname;
+            const dir = pathname.endsWith('/') ? pathname : pathname.substring(0, pathname.lastIndexOf('/') + 1);
+            const absUrl = encodeURIComponent(origin + dir + pdfPath);
             frame.src = 'https://docs.google.com/gview?embedded=true&url=' + absUrl;
+            // Timeout: se não carregar em 8s, mostra mensagem com botões
+            pdfTimeout = setTimeout(() => {
+              const loading = document.getElementById('pdfLoading');
+              if (loading && frame.style.opacity === '0') {
+                pdfFrameError();
+              }
+            }, 8000);
           } else {
             frame.src = pdfPath + '#toolbar=0&navpanes=0';
           }
